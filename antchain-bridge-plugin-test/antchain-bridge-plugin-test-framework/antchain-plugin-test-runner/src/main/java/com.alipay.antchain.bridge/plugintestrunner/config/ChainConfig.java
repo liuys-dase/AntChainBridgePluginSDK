@@ -3,20 +3,16 @@ package com.alipay.antchain.bridge.plugintestrunner.config;
 public class ChainConfig {
 
     public static class EthChainConfig extends ChainConfig {
-        public static final String dataDir;
         public static final String httpAddr;
         public static final int httpPort;
-        public static final String httpApi;
         public static final String privateKeyFile;
         public static final String gasPrice;
         public static final String gasLimit;
 
         static {
             ChainConfigManager config = ChainConfigManager.getInstance();
-            dataDir = config.getProperty("ethereum.data_dir");
             httpAddr = config.getProperty("ethereum.http_addr");
             httpPort = Integer.parseInt(config.getProperty("ethereum.http_port"));
-            httpApi = config.getProperty("ethereum.http_api");
             privateKeyFile = config.getProperty("ethereum.private_key_file");
             gasPrice = config.getProperty("ethereum.gas_price");
             gasLimit = config.getProperty("ethereum.gas_limit");
@@ -28,13 +24,11 @@ public class ChainConfig {
     }
 
     public static class EosChainConfig extends ChainConfig {
-        public static final String dataDir;
         public static final String httpServerAddress;
         public static final String privateKeyFile;
 
         static {
             ChainConfigManager config = ChainConfigManager.getInstance();
-            dataDir = config.getProperty("eos.data_dir");
             httpServerAddress = config.getProperty("eos.http_server_address");
             privateKeyFile = config.getProperty("eos.private_key_file");
         }
@@ -45,28 +39,20 @@ public class ChainConfig {
     }
 
     public static class FiscoBcosChainConfig extends ChainConfig {
-        public static final String dataDir;
         public static final String confDir;
-        public static final String confFile;
 
         static {
            ChainConfigManager config = ChainConfigManager.getInstance();
-            dataDir = config.getProperty("fiscobcos.data_dir");
             confDir = config.getProperty("fiscobcos.conf_dir");
-            confFile = config.getProperty("fiscobcos.conf_file");
         }
     }
 
     public static class ChainMakerChainConfig extends ChainConfig {
         public static final String confFile;
-        public static final String chainmakerJsonFile;
-        public static final String cryptoConfigPath;
 
         static {
             ChainConfigManager config = ChainConfigManager.getInstance();
             confFile = config.getProperty("chainmaker.conf_file");
-            chainmakerJsonFile = config.getProperty("chainmaker.chainmaker_json_file");
-            cryptoConfigPath = config.getProperty("chainmaker.crypto_config_path");
         }
     }
 

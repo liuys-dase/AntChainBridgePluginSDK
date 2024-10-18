@@ -21,6 +21,8 @@ public class PluginManagerService extends AbstractService{
     private final String pluginDirectory;
     private final Pf4jAntChainBridgePluginManager manager;
 
+    private TestCase testCase;
+
     public PluginManagerService(PTRLogger logger, String pluginDirectory) {
         super(logger);
         this.pluginDirectory = pluginDirectory;
@@ -28,17 +30,15 @@ public class PluginManagerService extends AbstractService{
     }
 
     @Override
-    public void run(TestCase testCase) {
+    public void run(TestCase testCase_) {
         // 设置 MDC
-        logger.putMDC(testCase.getName());
-
+        logger.putMDC(testCase_.getName());
         try {
-            runTest(testCase);
-            logger.rlog(LogLevel.INFO, "Plugin loading and starting test for " + testCase.getName() + ": PASSED");
-            // 运行成功
-            testCase.setPluginLoadAndStartTestSuccess(true);
+            this.testCase = testCase_;
+            runTest();
+            testCase.setPluginLoadAndStartTestSuccess(summarizeTestResult());
         } catch (PluginManagerException e) {
-            logger.rlog(LogLevel.ERROR, "Plugin loading and starting test for " + testCase.getName() + ": FAILED");
+            logger.rlog(LogLevel.ERROR, "Plugin test for " + testCase.getName() + ": FAILED");
             logger.rlog(LogLevel.ERROR, e.getMessage());
             if (e.getCause() != null) {
                 logger.rlog(LogLevel.ERROR, e.getCause().getMessage());
@@ -49,7 +49,80 @@ public class PluginManagerService extends AbstractService{
         logger.clearMDC();
     }
 
-    private void runTest(TestCase testCase) throws PluginManagerException{
+    private boolean summarizeTestResult() {
+        int totalTests = 0;
+        int successfulTests = 0;
+        int failedTests = 0;
+        StringBuilder failedTestNames = new StringBuilder();
+        boolean isLoadPlugin = testCase.isLoadPlugin();
+        boolean isStartPlugin = testCase.isStartPlugin();
+        boolean isStartPluginFromStop = testCase.isStartPluginFromStop();
+        boolean isStopPlugin = testCase.isStopPlugin();
+        boolean isCreateBBCService = testCase.isCreateBBCService();
+        if (isLoadPlugin) {
+            totalTests++;
+            if (testCase.isLoadPluginSuccess()) {
+                successfulTests++;
+            } else {
+                failedTests++;
+                failedTestNames.append("LoadPlugin").append(", ");
+            }
+        }
+        if (isStartPlugin) {
+            totalTests++;
+            if (testCase.isStartPluginSuccess()) {
+                successfulTests++;
+            } else {
+                failedTests++;
+                failedTestNames.append("StartPlugin").append(", ");
+            }
+        }
+        if (isStopPlugin) {
+            totalTests++;
+            if (testCase.isStopPluginSuccess()) {
+                successfulTests++;
+            } else {
+                failedTests++;
+                failedTestNames.append("StopPlugin").append(", ");
+            }
+        }
+        if (isStartPluginFromStop) {
+            totalTests++;
+            if (testCase.isStartPluginFromStopSuccess()) {
+                successfulTests++;
+            } else {
+                failedTests++;
+                failedTestNames.append("StartPluginFromStop").append(", ");
+            }
+        }
+        if (isCreateBBCService) {
+            totalTests++;
+            if (testCase.isCreateBBCServiceSuccess()) {
+                successfulTests++;
+            } else {
+                failedTests++;
+                failedTestNames.append("CreateBBCService").append(", ");
+            }
+        }
+
+        // 去掉最后一个多余的逗号和空格
+        if (failedTestNames.length() > 0) {
+            failedTestNames.setLength(failedTestNames.length() - 2);
+        }
+
+        // 打印测试结果
+        logger.rlog(LogLevel.INFO, "Total number of plugin tests: " + totalTests + ", Successful tests: " + successfulTests + ", Failed tests: " + failedTests);
+
+        if (failedTests > 0) {
+            logger.rlog(LogLevel.INFO, "Failed plugin tests: " + failedTestNames.toString());
+            return false;  // There are failed tests, return false
+        }
+
+        return true;  // 所有测试成功，返回 true
+    }
+
+
+    private void runTest() throws PluginManagerException{
         // 获取测试用例的参数
         boolean isLoadPlugin = testCase.isLoadPlugin();
         boolean isStartPlugin = testCase.isStartPlugin();
@@ -127,7 +200,13 @@ public class PluginManagerService extends AbstractService{
         logger.plog(LogLevel.INFO, "Loading plugin from " + path);
         try {
             manager.loadPlugin(path);
+            if (testCase != null) {
+                testCase.setLoadPluginSuccess(true);
+            }
         } catch (AntChainBridgePluginManagerException e){
+            if (testCase != null) {
+                testCase.setLoadPluginSuccess(false);
+            }
             throw new PluginLoadException("Failed to load plugin " + path, e);
         }
         logger.plog(LogLevel.INFO, "Plugin " + path + " has been successfully loaded");
@@ -139,8 +218,14 @@ public class PluginManagerService extends AbstractService{
         logger.plog(LogLevel.INFO, "Starting plugin from " + path);
         try {
             manager.startPlugin(path);
+            if (testCase != null) {
+                testCase.setStartPluginSuccess(true);
+            }
             logger.plog(LogLevel.INFO, "Plugin " + path + " has been successfully started");
         } catch (AntChainBridgePluginManagerException e) {
+            if (testCase != null) {
+                testCase.setStartPluginSuccess(false);
+            }
             throw new PluginStartException("Failed to start plugin: " + path, e);
         }
     }
@@ -149,8 +234,14 @@ public class PluginManagerService extends AbstractService{
     public void testStopPlugin(String pluginProduct) throws PluginManagerException {
         try {
             manager.stopPlugin(pluginProduct);
+            if (testCase != null) {
+                testCase.setStopPluginSuccess(true);
+            }
             logger.plog(LogLevel.INFO, "Plugin " + pluginProduct + " has been successfully stopped");
         } catch (Exception e) {
+            if (testCase != null) {
+                testCase.setStopPluginSuccess(false);
+            }
             throw new PluginStopException("Failed to stop plugin " + pluginProduct, e);
         }
     }
@@ -159,8 +250,14 @@ public class PluginManagerService extends AbstractService{
     public void testStartPluginFromStop(String pluginProduct) throws PluginManagerException {
         try {
             manager.startPluginFromStop(pluginProduct);
+            if (testCase != null) {
+                testCase.setStartPluginFromStopSuccess(true);
+            }
             logger.plog(LogLevel.INFO, "Plugin " + pluginProduct + " has been successfully started from stop");
         } catch (Exception e) {
+            if (testCase != null) {
+                testCase.setStartPluginFromStopSuccess(false);
+            }
             throw new PluginStartException("Failed to start plugin " + pluginProduct + " from stop", e);
         }
     }
@@ -186,8 +283,14 @@ public class PluginManagerService extends AbstractService{
         try {
             CrossChainDomain domain = new CrossChainDomain(domainName);
             manager.createBBCService(pluginProduct, domain, logger.getProcessLogger());
+            if (testCase != null) {
+                testCase.setCreateBBCServiceSuccess(true);
+            }
             logger.plog(LogLevel.INFO, "BBC service for " + pluginProduct + " has been successfully created");
         } catch (Exception e) {
+            if (testCase != null) {
+                testCase.setCreateBBCServiceSuccess(false);
+            }
             throw new BBCServiceCreateException("Failed to create BBC service", e);
         }
     }

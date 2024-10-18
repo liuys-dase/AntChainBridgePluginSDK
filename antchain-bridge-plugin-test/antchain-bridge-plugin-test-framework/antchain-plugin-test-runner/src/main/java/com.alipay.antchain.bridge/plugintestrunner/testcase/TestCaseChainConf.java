@@ -22,6 +22,7 @@ public abstract class TestCaseChainConf {
 
     public abstract boolean isValid();
 
+    // 将 chainConf 转换为 chainManager
     public IChainManager toChainManager() throws Exception {
         ChainProduct cp = ChainProduct.fromValue(product);
         switch (cp) {
@@ -82,7 +83,7 @@ public abstract class TestCaseChainConf {
         private String gasLimit;
 
         public TestCaseEthConf() {
-            setProduct("TestCaseEthConf");
+            setProduct(ChainProduct.ETH.getValue());
         }
 
         @Override
@@ -98,7 +99,7 @@ public abstract class TestCaseChainConf {
         private String privateKeyFile;
 
         public TestCaseEosConf() {
-            setProduct("TestCaseEosConf");
+            setProduct(ChainProduct.EOS.getValue());
         }
 
         @Override
@@ -113,7 +114,7 @@ public abstract class TestCaseChainConf {
         private String confDir;
 
         public TestCaseBcosConf() {
-            setProduct("TestCaseBcosConf");
+            setProduct(ChainProduct.BCOS.getValue());
         }
 
         @Override
@@ -128,7 +129,7 @@ public abstract class TestCaseChainConf {
         private String confFile;
 
         public TestCaseFabricConf() {
-            setProduct("TestCaseFabricConf");
+            setProduct(ChainProduct.FABRIC.getValue());
         }
 
         @Override
@@ -144,7 +145,7 @@ public abstract class TestCaseChainConf {
         private String confFile;
 
         public TestCaseChainMakerConf() {
-            setProduct("TestCaseChainMakerConf");
+            setProduct(ChainProduct.CHAINMAKER.getValue());
         }
 
         @Override
@@ -159,7 +160,7 @@ public abstract class TestCaseChainConf {
         private String httpUrl;
 
         public TestCaseHyperChainConf() {
-            setProduct("TestCaseHyperChainConf");
+            setProduct(ChainProduct.HYPERCHAIN.getValue());
         }
 
         @Override

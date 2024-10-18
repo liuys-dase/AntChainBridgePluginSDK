@@ -70,16 +70,16 @@ public class TestCaseDeserializer extends StdDeserializer<TestCase> {
 
         // 解析 chainConf
         JsonNode chainConfNode = node.get("chainConf");
-        if (chainConfNode != null && !chainConfNode.isNull()) {
+        if (chainConfNode != null) {
             String product = testCase.getProduct();
             if (product == null || product.isEmpty()) {
                 throw new JsonMappingException(jp, "Product field is missing or empty.");
             }
-
-            // 将 chainConf 节点转换为 JSON 字符串
-            String chainConfJson = chainConfNode.toString();
+            String chainConfJson = new ObjectMapper().writeValueAsString(chainConfNode);
             TestCaseChainConf chainConf;
             try {
+                // 尝试将 JSON 字符串转换为 TestCaseChainConf 对象
+                // 根据 product 字段的值，选择不同的解析方式
                 chainConf = TestCaseChainConf.fromJson(chainConfJson, product);
             } catch (Exception e) {
                 throw new JsonMappingException(jp, "Failed to parse chainConf: " + e.getMessage(), e);

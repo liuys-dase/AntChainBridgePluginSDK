@@ -15,7 +15,6 @@ import com.alipay.antchain.bridge.plugintestrunner.util.PTRLogger;
 import com.alipay.antchain.bridge.plugintestrunner.exception.PluginTestException.*;
 
 import lombok.Setter;
-import org.aspectj.weaver.ast.Test;
 
 import java.util.List;
 
@@ -201,7 +200,7 @@ public class PluginTestService extends AbstractService{
         }
 
         // 输出测试结果
-        logger.rlog(LogLevel.INFO, "Total tests: " + totalTests + ", Successful tests: " + successfulTests + ", Failed tests: " + failedTests);
+        logger.rlog(LogLevel.INFO, "Total number of interface tests: " + totalTests + ", Successful tests: " + successfulTests + ", Failed tests: " + failedTests);
     }
 
 
@@ -494,7 +493,7 @@ public class PluginTestService extends AbstractService{
         }
 
         // 打印测试结果
-        logger.rlog(LogLevel.INFO, "Total tests: " + totalTests + ", " + successfulTests + " succeeded, " + failedTests + " failed.");
+        logger.rlog(LogLevel.INFO, "Total number of interface tests: " + totalTests + ", Successful tests: " + successfulTests + ", Failed tests: " + failedTests);
 
         if (failedTests > 0) {
             logger.rlog(LogLevel.INFO, "Failed tests: " + failedTestNames.toString());

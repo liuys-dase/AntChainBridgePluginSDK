@@ -129,7 +129,7 @@ public class EthereumPluginTest {
     }
 
     @Test
-    public void testTestToolRelayAuthMessageTest() throws PluginTestToolException {
+    public void testTestToolRelayAuthMessageTest() throws PluginTestToolException, InterruptedException {
         ethPluginTestTool.relayAuthMessageTest();
     }
 

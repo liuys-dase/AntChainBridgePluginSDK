@@ -34,13 +34,28 @@ public class TestCase {
     @JsonIgnore
     private boolean loadPlugin;
     @JsonIgnore
+    private boolean isLoadPluginSuccess;
+
+    @JsonIgnore
     private boolean startPlugin;
+    @JsonIgnore
+    private boolean isStartPluginSuccess;
+
     @JsonIgnore
     private boolean startPluginFromStop;
     @JsonIgnore
+    private boolean isStartPluginFromStopSuccess;
+
+    @JsonIgnore
     private boolean stopPlugin;
     @JsonIgnore
+    private boolean isStopPluginSuccess;
+
+    @JsonIgnore
     private boolean createBBCService;
+    @JsonIgnore
+    private boolean isCreateBBCServiceSuccess;
+
 
     // 插件测试标志
     @JsonIgnore
@@ -149,20 +164,36 @@ public class TestCase {
     }
 
     public void setPluginInterfaceTestFlag() throws TestCaseException {
-        checkPluginInterfaceTestList();
-        startup = pluginInterfaceTestList.contains("startup");
-        shutdown = pluginInterfaceTestList.contains("shutdown");
-        getContext = pluginInterfaceTestList.contains("getContext");
-        queryLatestHeight = pluginInterfaceTestList.contains("queryLatestHeight");
-        setupAuthMessageContract = pluginInterfaceTestList.contains("setupAuthMessageContract");
-        setupSDPMessageContract = pluginInterfaceTestList.contains("setupSDPMessageContract");
-        setLocalDomain = pluginInterfaceTestList.contains("setLocalDomain");
-        querySDPMessageSeq = pluginInterfaceTestList.contains("querySDPMessageSeq");
-        setProtocol = pluginInterfaceTestList.contains("setProtocol");
-        setAmContract = pluginInterfaceTestList.contains("setAmContract");
-        readCrossChainMessagesByHeight = pluginInterfaceTestList.contains("readCrossChainMessagesByHeight");
-        relayAuthMessage = pluginInterfaceTestList.contains("relayAuthMessage");
-        readCrossChainMessageReceipt = pluginInterfaceTestList.contains("readCrossChainMessageReceipt");
+        if (pluginInterfaceTestList == null || pluginInterfaceTestList.isEmpty()) {
+            startup = true;
+            shutdown = true;
+            getContext = true;
+            queryLatestHeight = true;
+            setupAuthMessageContract = true;
+            setupSDPMessageContract = true;
+            setLocalDomain = true;
+            querySDPMessageSeq = true;
+            setProtocol = true;
+            setAmContract = true;
+            readCrossChainMessagesByHeight = true;
+            relayAuthMessage = true;
+            readCrossChainMessageReceipt = true;
+        } else {
+            checkPluginInterfaceTestList();
+            startup = pluginInterfaceTestList.contains("startup");
+            shutdown = pluginInterfaceTestList.contains("shutdown");
+            getContext = pluginInterfaceTestList.contains("getContext");
+            queryLatestHeight = pluginInterfaceTestList.contains("queryLatestHeight");
+            setupAuthMessageContract = pluginInterfaceTestList.contains("setupAuthMessageContract");
+            setupSDPMessageContract = pluginInterfaceTestList.contains("setupSDPMessageContract");
+            setLocalDomain = pluginInterfaceTestList.contains("setLocalDomain");
+            querySDPMessageSeq = pluginInterfaceTestList.contains("querySDPMessageSeq");
+            setProtocol = pluginInterfaceTestList.contains("setProtocol");
+            setAmContract = pluginInterfaceTestList.contains("setAmContract");
+            readCrossChainMessagesByHeight = pluginInterfaceTestList.contains("readCrossChainMessagesByHeight");
+            relayAuthMessage = pluginInterfaceTestList.contains("relayAuthMessage");
+            readCrossChainMessageReceipt = pluginInterfaceTestList.contains("readCrossChainMessageReceipt");
+        }
     }
 
     public HashMap<String, List<String>> getPluginInterfaceTestDependency() {
@@ -184,12 +215,20 @@ public class TestCase {
     }
 
     public void setPluginLoadAndStartTestFlag() throws TestCaseException {
-        checkPluginLoadAndStartTestList();
-        loadPlugin = pluginLoadAndStartTestList.contains("loadPlugin");
-        startPlugin = pluginLoadAndStartTestList.contains("startPlugin");
-        startPluginFromStop = pluginLoadAndStartTestList.contains("startPluginFromStop");
-        stopPlugin = pluginLoadAndStartTestList.contains("stopPlugin");
-        createBBCService = pluginLoadAndStartTestList.contains("createBBCService");
+        if (pluginLoadAndStartTestList == null || pluginLoadAndStartTestList.isEmpty()) {
+            loadPlugin = true;
+            startPlugin = true;
+            startPluginFromStop = true;
+            stopPlugin = true;
+            createBBCService = true;
+        } else {
+            checkPluginLoadAndStartTestList();
+            loadPlugin = pluginLoadAndStartTestList.contains("loadPlugin");
+            startPlugin = pluginLoadAndStartTestList.contains("startPlugin");
+            startPluginFromStop = pluginLoadAndStartTestList.contains("startPluginFromStop");
+            stopPlugin = pluginLoadAndStartTestList.contains("stopPlugin");
+            createBBCService = pluginLoadAndStartTestList.contains("createBBCService");
+        }
     }
 
     public Object getFieldValue(String fieldName) throws IllegalAccessException, NoSuchFieldException {

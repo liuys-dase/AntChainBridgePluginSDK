@@ -23,11 +23,11 @@ import lombok.Getter;
 public class PluginTestRunner {
 
     @Getter
-    private final PluginManagerService pluginManagerService;
+    private final PluginManagerService pluginManagerService;    // 插件管理服务（测试插件启动/关闭等）
     @Getter
-    private final PluginTestService pluginTestService;
+    private final PluginTestService pluginTestService;          // 插件测试服务（插件接口测试）
     @Getter
-    private final ChainManagerService chainManagerService;
+    private final ChainManagerService chainManagerService;      // 链管理服务（链启动/关闭等）
     @Getter
     private final PTRLogger logger;
     private final TestCaseContainer testCaseContainer;
@@ -45,17 +45,13 @@ public class PluginTestRunner {
         pluginTestRunner.run();
     }
 
-    public void run() throws IOException {
+    public void run() {
         for (TestCase testCase : testCaseContainer.getTestCases()) {
             logger.rlog(LogLevel.INFO, "Running " + testCase.getName());
             chainManagerService.run(testCase);
             pluginManagerService.run(testCase);
             pluginTestService.run(testCase);
         }
-        pluginTestService.close();
-        pluginManagerService.close();
-        chainManagerService.close();
-
         printTestResult();
     }
 

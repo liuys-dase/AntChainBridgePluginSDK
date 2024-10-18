@@ -1,10 +1,10 @@
 {
   "testCases": [
     {
-      "name": "case1",
+      "name": "simple-ethereum-test-case",
       "jarPath": "simple-ethereum-bbc-0.2.0-plugin.jar",
       "product": "simple-ethereum",
-      "domain": "domain",
+      "domain": "simple-ethereum-domain",
       "pluginLoadAndStartTestList": [
         "loadPlugin",
         "startPlugin",
@@ -12,9 +12,16 @@
         "stopPlugin",
         "createBBCService"
       ],
+      "chainConf": {
+        "httpUrl": "http://127.0.0.1:8545",
+        "privateKeyFile": "/tmp/ethereum/private_key.txt",
+        "gasPrice":4200000000,
+        "gasLimit": 10000000
+      },
       "pluginInterfaceTestList": [
         "startup",
-        "shutdown"
+        "shutdown",
+        "readCrossChainMessagesByHeight"
       ]
     }
   ]

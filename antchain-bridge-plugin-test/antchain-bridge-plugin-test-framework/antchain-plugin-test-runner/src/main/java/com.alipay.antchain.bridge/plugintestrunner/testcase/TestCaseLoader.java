@@ -5,6 +5,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.File;
 
+/**
+ * 从 `testcase.json` 中加载测试用例，同时对 testcase 中的数据进行初始化
+ */
 public class TestCaseLoader {
 
     public static TestCaseContainer loadTestCasesFromFile(String filePath) throws TestCaseException {

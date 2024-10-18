@@ -12,6 +12,7 @@ import picocli.CommandLine.Command;
     PluginTestCmd.class,
     PluginManagerCmd.class,
     ChainManagerCmd.class,
+    TestCaseCmd.class,
     HelpCmd.class,
     ExitCmd.class})
 public class App implements Runnable {

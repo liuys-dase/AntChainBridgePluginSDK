@@ -214,3 +214,75 @@ Successfully created BBC service for chainmaker with domain domain-chainmaker
 plugin test -j simple-ethereum-bbc-0.2.0-plugin.jar -p simple-ethereum -f readCrossChainMessagesByHeight
 ```
 
+## 测试用例
+插件测试框架支持通过传入测试用例文件进行测试，测试用例文件为 `testcase.json` 格式，包含了测试用例的相关信息，如插件名称、测试方法等。测试用例文件的格式如下：
+
+```json
+{
+  "testCases": [
+    {
+      "name": "",
+      "jarPath": "",
+      "product": "",
+      "domain": "",
+      "pluginLoadAndStartTestList": [],
+      "chainConf": {},
+      "pluginInterfaceTestList": []
+    }
+  ]
+}
+```
+- `name`：测试用例名称
+- `jarPath`：插件 jar 包的完整路径或名称（从配置路径下读取）
+- `product`：插件对应的链类型
+- `domain`：创建 BBC 服务时使用的 domain
+- `pluginLoadAndStartTestList`：插件加载启动测试方法列表，可选，为空时默认测试所有方法，支持的方法有：
+  - `loadPlugin`
+  - `startPlugin`
+  - `startPluginFromStop`
+  - `stopPlugin`
+  - `createBBCService`
+- `chainConf`：链配置信息，可选，为空时通过脚本启动临时测试链。各链的配置信息不同，具体可参考 `testcase/TestCaseChainConf.java`
+- `pluginInterfaceTestList`：插件功能测试方法列表，可选，为空时默认测试所有方法，支持的方法有：
+  - `startup`
+  - `shutdown`
+  - `getContext`
+  - `queryLatestHeight`
+  - `setupAuthMessageContract`
+  - `setupSDPMessageContract`
+  - `setLocalDomain`
+  - `querySDPMessageSeq`
+  - `setProtocol`
+  - `setAmContract`
+  - `readCrossChainMessagesByHeight`
+  - `relayAuthMessage`
+  - `readCrossChainMessageReceipt`
+
+### 以太坊插件测试用例示例
+```json
+{
+  "testCases": [
+    {
+      "name": "simple-ethereum-test-case",
+      "jarPath": "simple-ethereum-bbc-0.2.0-plugin.jar",
+      "product": "simple-ethereum",
+      "domain": "simple-ethereum-domain",
+      "pluginLoadAndStartTestList": [
+        "loadPlugin",
+        "startPlugin",
+      ],
+      "chainConf": {
+        "httpUrl": "http://127.0.0.1:8545",
+        "privateKeyFile": "/tmp/ethereum/private_key.txt",
+        "gasPrice":4200000000,
+        "gasLimit": 10000000
+      },
+      "pluginInterfaceTestList": [
+        "startup",
+        "shutdown",
+        "readCrossChainMessagesByHeight"
+      ]
+    }
+  ]
+}
+```

@@ -43,7 +43,8 @@ public class ChainMakerPluginTest {
         chainManagerService = new ChainManagerService(logger, shellScriptRunner);
         chainManagerService.startup(PLUGIN_PRODUCT);
         chainManager = (ChainMakerChainManager) chainManagerService.getChainManager(PLUGIN_PRODUCT);
-        chainManager = new ChainMakerChainManager(ChainConfig.ChainMakerChainConfig.confFile);
+//        chainManager = new ChainMakerChainManager(ChainConfig.ChainMakerChainConfig.confFile);
+        System.out.println(chainManager.getConfig());
         // 配置 context、bbcService
         bbcService = pluginManagerService.getBBCService(PLUGIN_PRODUCT, DOMAIN_NAME);
     }
@@ -59,11 +60,11 @@ public class ChainMakerPluginTest {
 
     @AfterEach
     public void close() {
-        if (chainManagerService != null) {
-            chainManagerService.close();
-        }
-        if (pluginManagerService != null) {
-            pluginManagerService.close();
-        }
+//        if (chainManagerService != null) {
+//            chainManagerService.close();
+//        }
+//        if (pluginManagerService != null) {
+//            pluginManagerService.close();
+//        }
     }
 }
