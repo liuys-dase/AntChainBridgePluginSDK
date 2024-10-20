@@ -21,7 +21,8 @@
       "pluginInterfaceTestList": [
         "startup",
         "shutdown",
-        "readCrossChainMessagesByHeight"
+        "readCrossChainMessagesByHeight",
+        "getContext"
       ]
     }
   ]

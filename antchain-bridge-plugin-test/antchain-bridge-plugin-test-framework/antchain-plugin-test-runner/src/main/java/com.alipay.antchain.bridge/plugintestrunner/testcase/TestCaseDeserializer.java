@@ -1,5 +1,6 @@
 package com.alipay.antchain.bridge.plugintestrunner.testcase;
 
+import com.alipay.antchain.bridge.plugintestrunner.config.ChainConf;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.*;
@@ -76,11 +77,11 @@ public class TestCaseDeserializer extends StdDeserializer<TestCase> {
                 throw new JsonMappingException(jp, "Product field is missing or empty.");
             }
             String chainConfJson = new ObjectMapper().writeValueAsString(chainConfNode);
-            TestCaseChainConf chainConf;
+            ChainConf chainConf;
             try {
-                // 尝试将 JSON 字符串转换为 TestCaseChainConf 对象
+                // 尝试将 JSON 字符串转换为 ChainConf 对象
                 // 根据 product 字段的值，选择不同的解析方式
-                chainConf = TestCaseChainConf.fromJson(chainConfJson, product);
+                chainConf = ChainConf.fromJson(chainConfJson, product);
             } catch (Exception e) {
                 throw new JsonMappingException(jp, "Failed to parse chainConf: " + e.getMessage(), e);
             }

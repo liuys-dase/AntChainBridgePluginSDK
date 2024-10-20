@@ -7,27 +7,28 @@ import com.alipay.antchain.bridge.plugintestrunner.chainmanager.eth.EthChainMana
 import com.alipay.antchain.bridge.plugintestrunner.chainmanager.fabric.FabricChainManager;
 import com.alipay.antchain.bridge.plugintestrunner.chainmanager.fiscobcos.FiscoBcosChainManager;
 import com.alipay.antchain.bridge.plugintestrunner.chainmanager.hyperchain.HyperchainChainManager;
-import com.alipay.antchain.bridge.plugintestrunner.config.ChainConfig;
-import com.alipay.antchain.bridge.plugintestrunner.config.ChainProduct;
+import com.alipay.antchain.bridge.plugintestrunner.config.ChainConf;
+import com.alipay.antchain.bridge.plugintestrunner.config.ChainProductEnum;
 import com.alipay.antchain.bridge.plugintestrunner.exception.ChainManagerException.*;
 
 public class IChainManagerFactory {
     // 根据 product 创建 IChainManager
     public static IChainManager createIChainManager(String chainProduct) throws Exception {
-        ChainProduct cp = ChainProduct.fromValue(chainProduct);
+        ChainProductEnum cp = ChainProductEnum.fromValue(chainProduct);
+        ChainConf conf = ChainConf.readFromProperties(chainProduct);
         switch (cp) {
             case ETH:
-                return new EthChainManager(ChainConfig.EthChainConfig.getHttpUrl(), ChainConfig.EthChainConfig.privateKeyFile, ChainConfig.EthChainConfig.gasPrice, ChainConfig.EthChainConfig.gasLimit);
+                return new EthChainManager(((ChainConf.EthChainConf) conf).getHttpUrl(), ((ChainConf.EthChainConf) conf).getPrivateKeyFile(), ((ChainConf.EthChainConf) conf).getGasPrice(), ((ChainConf.EthChainConf) conf).getGasLimit());
             case EOS:
-                return new EosChainManager(ChainConfig.EosChainConfig.getHttpUrl(), ChainConfig.EosChainConfig.privateKeyFile);
+                return new EosChainManager(((ChainConf.EosChainConf) conf).getHttpUrl(), ((ChainConf.EosChainConf) conf).getPrivateKeyFile());
             case BCOS:
-                return new FiscoBcosChainManager(ChainConfig.FiscoBcosChainConfig.confDir);
+                return new FiscoBcosChainManager(((ChainConf.BcosChainConf) conf).getConfDir());
             case FABRIC:
-                  return new FabricChainManager(ChainConfig.FabricChainConfig.confFile);
+                  return new FabricChainManager(((ChainConf.FabricChainConf) conf).getConfFile());
             case CHAINMAKER:
-                return new ChainMakerChainManager(ChainConfig.ChainMakerChainConfig.confFile);
+                return new ChainMakerChainManager(((ChainConf.ChainMakerChainConf) conf).getConfFile());
             case HYPERCHAIN:
-                return new HyperchainChainManager(ChainConfig.HyperChainChainConfig.getHttpUrl());
+                return new HyperchainChainManager(((ChainConf.HyperChainChainConf) conf).getHttpUrl());
             default:
                 throw new ChainNotSupportedException("Unsupported chain product: " + chainProduct);
         }

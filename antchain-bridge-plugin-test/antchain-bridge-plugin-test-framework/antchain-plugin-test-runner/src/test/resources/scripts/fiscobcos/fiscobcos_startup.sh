@@ -80,18 +80,30 @@ setup_directories_and_download() {
         exit 1
     }
 
-    log "INFO" "Downloading build_chain.sh script."
-    curl -#LO "https://osp-1257653870.cos.ap-guangzhou.myqcloud.com/FISCO-BCOS/FISCO-BCOS/releases/v$version/build_chain.sh" && chmod u+x build_chain.sh || {
-        log "ERROR" "Failed to download or set execute permission on build_chain.sh."
-        exit 1
-    }
-    log "INFO" "build_chain.sh downloaded and made executable."
+    cp "$SCRIPT_DIR"/build_chain.sh . || {
+          log "ERROR" "Failed to copy build_chain.sh."
+          exit 1
+      }
+    log "INFO" "build_chain.sh copied successfully."
+
+    cp "$SCRIPT_DIR"/get_account.sh . || {
+          log "ERROR" "Failed to copy get_account.sh."
+          exit 1
+      }
+    log "INFO" "get_account.sh copied successfully."
+
+#        log "INFO" "Downloading build_chain.sh script."
+#        curl -#LO "https://gitee.com/FISCO-BCOS/FISCO-BCOS/releases/download/v3.11.0/build_chain.sh" && chmod u+x build_chain.sh || {
+#            log "ERROR" "Failed to download or set execute permission on build_chain.sh."
+#            exit 1
+#        }
+#        log "INFO" "build_chain.sh downloaded and made executable."
 }
 
 # 搭建4节点非国密联盟链的函数
 build_chain() {
     log "INFO" "Building a 4-node non-GM consortium chain."
-    bash build_chain.sh -l 127.0.0.1:4 -p 30300,20200 || {
+    bash build_chain.sh -l 127.0.0.1:4 -p 30300,20200 -v v"$version"|| {
         log "ERROR" "Failed to build the consortium chain using build_chain.sh."
         exit 1
     }

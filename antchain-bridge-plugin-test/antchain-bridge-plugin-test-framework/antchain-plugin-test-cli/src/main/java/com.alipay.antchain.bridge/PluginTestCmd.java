@@ -40,7 +40,7 @@ public class PluginTestCmd implements Runnable {
     }
 
 
-    @Command(name = "test", mixinStandardHelpOptions = true,description = "Test sinlge plugin.")
+    @Command(name = "com.alipay.antchain.bridge/plugintestrunner/operation", mixinStandardHelpOptions = true,description = "Test sinlge plugin.")
     public static class SinglePluginTest implements Runnable {
 
         @ParentCommand

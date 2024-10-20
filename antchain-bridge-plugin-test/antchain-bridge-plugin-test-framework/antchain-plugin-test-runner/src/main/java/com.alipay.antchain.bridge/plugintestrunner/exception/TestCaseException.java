@@ -37,4 +37,15 @@ public class TestCaseException extends Exception{
             super(message, cause);
         }
     }
+
+
+    public static class TestCaseChainConfReadFromPropertiesException extends TestCaseException {
+        public TestCaseChainConfReadFromPropertiesException(String message) {
+            super(message);
+        }
+
+        public TestCaseChainConfReadFromPropertiesException(String message, Throwable cause) {
+            super(message, cause);
+        }
+    }
 }

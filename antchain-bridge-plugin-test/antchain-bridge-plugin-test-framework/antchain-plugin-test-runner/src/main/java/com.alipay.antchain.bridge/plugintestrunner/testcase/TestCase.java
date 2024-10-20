@@ -1,5 +1,6 @@
 package com.alipay.antchain.bridge.plugintestrunner.testcase;
 
+import com.alipay.antchain.bridge.plugintestrunner.config.ChainConf;
 import com.alipay.antchain.bridge.plugintestrunner.exception.TestCaseException;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
@@ -20,7 +21,7 @@ public class TestCase {
     private String jarPath;
     private String product;
     private String domain;
-    private TestCaseChainConf chainConf;
+    private ChainConf chainConf;
     private List<String> pluginLoadAndStartTestList;
     private List<String> pluginInterfaceTestList;
 

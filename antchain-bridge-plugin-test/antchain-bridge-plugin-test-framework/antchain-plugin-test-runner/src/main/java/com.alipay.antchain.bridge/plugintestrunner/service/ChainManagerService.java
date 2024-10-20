@@ -3,7 +3,7 @@ package com.alipay.antchain.bridge.plugintestrunner.service;
 
 import com.alipay.antchain.bridge.plugintestrunner.chainmanager.IChainManager;
 import com.alipay.antchain.bridge.plugintestrunner.chainmanager.IChainManagerFactory;
-import com.alipay.antchain.bridge.plugintestrunner.config.ChainProduct;
+import com.alipay.antchain.bridge.plugintestrunner.config.ChainProductEnum;
 import com.alipay.antchain.bridge.plugintestrunner.exception.ChainManagerException;
 import com.alipay.antchain.bridge.plugintestrunner.testcase.TestCase;
 import com.alipay.antchain.bridge.plugintestrunner.util.LogLevel;
@@ -125,7 +125,7 @@ public class ChainManagerService extends AbstractService {
     private void initializeTemporalChain(TestCase testCase) throws ChainManagerException, InterruptedException {
         logger.plog(LogLevel.INFO, "No chain configuration found in test case, start a temporary chain");
         String product = testCase.getProduct();
-        if (ChainProduct.isInvalid(product)) {
+        if (ChainProductEnum.isInvalid(product)) {
             throw new InvalidProductException("Invalid product: " + product);
         } else {
             // 判断是否已经存在该类型的链
@@ -160,7 +160,7 @@ public class ChainManagerService extends AbstractService {
      * </p>
      */
     public void startup(String product) throws ChainManagerException, InterruptedException, IOException {
-        if (ChainProduct.isInvalid(product)) {
+        if (ChainProductEnum.isInvalid(product)) {
             throw new InvalidProductException("Invalid product: " + product);
         } else if (tmpChainManagers.get(product) != null) {
             logger.plog(LogLevel.INFO, "Chain for " + product + " already exists");
@@ -190,7 +190,7 @@ public class ChainManagerService extends AbstractService {
     }
 
     public void shutdown(String product) throws ChainManagerException, IOException, InterruptedException {
-        if (ChainProduct.isInvalid(product)) {
+        if (ChainProductEnum.isInvalid(product)) {
             throw new InvalidProductException("Invalid product: " + product);
         } else if (tmpChainManagers.get(product) == null) {
             throw new ChainManagerNotInitializedException("ChainManager not initialized for chain: " + product);

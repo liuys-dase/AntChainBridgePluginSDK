@@ -6,9 +6,10 @@ import com.alipay.antchain.bridge.commons.bbc.AbstractBBCContext;
 import com.alipay.antchain.bridge.plugins.spi.bbc.AbstractBBCService;
 import com.alipay.antchain.bridge.plugins.spi.bbc.IBBCService;
 import com.alipay.antchain.bridge.plugintestrunner.chainmanager.IChainManager;
-import com.alipay.antchain.bridge.plugintestrunner.config.ChainProduct;
+import com.alipay.antchain.bridge.plugintestrunner.config.ChainProductEnum;
 import com.alipay.antchain.bridge.plugintestrunner.exception.ChainManagerException;
 import com.alipay.antchain.bridge.plugintestrunner.exception.PluginTestException;
+import com.alipay.antchain.bridge.plugintestrunner.operation.PluginInterfaceEnum;
 import com.alipay.antchain.bridge.plugintestrunner.testcase.TestCase;
 import com.alipay.antchain.bridge.plugintestrunner.util.LogLevel;
 import com.alipay.antchain.bridge.plugintestrunner.util.PTRLogger;
@@ -35,7 +36,7 @@ public class PluginTestService extends AbstractService{
     }
 
     public String getSupportedInterfaces() {
-        return TestOperation.getAllOperationNames();
+        return PluginInterfaceEnum.getAllOperationNames();
     }
 
     @Override
@@ -109,10 +110,10 @@ public class PluginTestService extends AbstractService{
         int failedTests = 0;
 
         for (String func : functionList) {
-            TestOperation op = null;
+            PluginInterfaceEnum op = null;
             totalTests++;
             try {
-                op = TestOperation.fromString(func);
+                op = PluginInterfaceEnum.fromString(func);
             } catch (Exception e) {
                 logger.rlog(LogLevel.ERROR, "Unknown operation: " + func);
                 failedTests++;
@@ -136,10 +137,10 @@ public class PluginTestService extends AbstractService{
                         successfulTests++;
                         break;
 
-                    // case QUERY_LATEST_HEIGHT:
-                    //     pluginTestTool.queryLatestHeightTest();
-                    //     successfulTests++;
-                    //     break;
+//                     case QUERY_LATEST_HEIGHT:
+//                         pluginTestTool.queryLatestHeightTest();
+//                         successfulTests++;
+//                         break;
 
                     case SETUP_AUTH_MESSAGE_CONTRACT:
                         pluginTestTool.setupAmContractTest();
@@ -204,6 +205,18 @@ public class PluginTestService extends AbstractService{
     }
 
 
+    // 根据 product 生成 IPluginTestTool
+    private IPluginTestTool getPluginTester(String product, AbstractBBCContext bbcContext, IBBCService bbcService) throws PluginTestToolNotSupportException {
+        ChainProductEnum cp = ChainProductEnum.fromValue(product);
+        switch (cp) {
+            case ETH:
+                return new EthPluginTestTool(bbcContext, (AbstractBBCService)bbcService);
+            // TODO
+            default:
+                throw new PluginTestToolNotSupportException("Plugin test tool for " + product + " is not supported.");
+        }
+    }
+
     // 运行每个测试用例的接口测试
     private void runTest(TestCase testCase) throws PluginTestException, ChainManagerException {
         // 从 pluginManagerService 中获取 bbcService
@@ -244,9 +257,10 @@ public class PluginTestService extends AbstractService{
         }
 
         // TODO: 测试工具还没实现
-        // if (testCase.isQueryLatestHeight()) {
-        //
-        // }
+         if (testCase.isQueryLatestHeight()) {
+            logger.plog(LogLevel.WARN, "QueryLatestHeight test is not supported yet.");
+            testCase.setQueryLatestHeightSuccess(false);
+         }
 
         if (testCase.isSetupAuthMessageContract()) {
             try {
@@ -345,18 +359,6 @@ public class PluginTestService extends AbstractService{
                 testCase.setReadCrossChainMessageReceiptSuccess(false);
                 logger.plog(LogLevel.ERROR, "ReadCrossChainMessageReceipt test failed: " + e.getMessage());
             }
-        }
-    }
-
-    // 根据 product 生成 IPluginTestTool
-    private IPluginTestTool getPluginTester(String product, AbstractBBCContext bbcContext, IBBCService bbcService) throws PluginTestToolNotSupportException {
-        ChainProduct cp = ChainProduct.fromValue(product);
-        switch (cp) {
-            case ETH:
-                return new EthPluginTestTool(bbcContext, (AbstractBBCService)bbcService);
-            // TODO
-            default:
-                throw new PluginTestToolNotSupportException("Plugin test tool for " + product + " is not supported.");
         }
     }
 
@@ -582,52 +584,4 @@ public class PluginTestService extends AbstractService{
 //            }
 //        }
 //    }
-
-    public enum TestOperation {
-        STARTUP("startup"),
-        SHUTDOWN("shutdown"),
-        GET_CONTEXT("getContext"),
-        QUERY_LATEST_HEIGHT("queryLatestHeight"),
-        SETUP_AUTH_MESSAGE_CONTRACT("setupAuthMessageContract"),
-        SETUP_SDP_MESSAGE_CONTRACT("setupSDPMessageContract"),
-        SET_LOCAL_DOMAIN("setLocalDomain"),
-        QUERY_SDP_MESSAGE_SEQ("querySDPMessageSeq"),
-        SET_PROTOCOL("setProtocol"),
-        SET_AM_CONTRACT("setAmContract"),
-        READ_CROSS_CHAIN_MESSAGES_BY_HEIGHT("readCrossChainMessagesByHeight"),
-        RELAY_AUTH_MESSAGE("relayAuthMessage"),
-        READ_CROSS_CHAIN_MESSAGE_RECEIPT("readCrossChainMessageReceipt");
-
-        private final String operationName;
-
-        TestOperation(String operationName) {
-            this.operationName = operationName;
-        }
-
-        public String getOperationName() {
-            return operationName;
-        }
-
-        public static TestOperation fromString(String operationName) {
-            for (TestOperation operation : TestOperation.values()) {
-                if (operation.getOperationName().equalsIgnoreCase(operationName)) {
-                    return operation;
-                }
-            }
-            // 如果没有匹配项，可以抛出异常或返回 null
-            throw new IllegalArgumentException("No enum constant for operation: " + operationName);
-        }
-
-        public static String getAllOperationNames() {
-            StringBuilder operationNames = new StringBuilder();
-            for (TestOperation operation : TestOperation.values()) {
-                if (operationNames.length() > 0) {
-                    operationNames.append(", ");
-                }
-                operationNames.append(operation.getOperationName());
-            }
-            return operationNames.toString();
-        }
-
-    }
 }

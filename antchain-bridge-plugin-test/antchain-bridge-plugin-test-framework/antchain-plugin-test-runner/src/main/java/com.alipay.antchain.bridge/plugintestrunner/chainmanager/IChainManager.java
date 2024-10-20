@@ -2,6 +2,7 @@ package com.alipay.antchain.bridge.plugintestrunner.chainmanager;
 
 import com.alipay.antchain.bridge.commons.bbc.AbstractBBCContext;
 import com.alipay.antchain.bridge.commons.bbc.DefaultBBCContext;
+import com.alipay.antchain.bridge.plugintestrunner.config.ChainConf;
 import lombok.Getter;
 
 

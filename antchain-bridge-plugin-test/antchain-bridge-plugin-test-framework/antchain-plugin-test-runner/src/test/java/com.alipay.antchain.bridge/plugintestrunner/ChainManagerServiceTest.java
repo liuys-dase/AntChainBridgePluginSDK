@@ -1,8 +1,6 @@
 package com.alipay.antchain.bridge.plugintestrunner;
 
 
-import com.alipay.antchain.bridge.plugintestrunner.chainmanager.eos.EosChainManager;
-import com.alipay.antchain.bridge.plugintestrunner.config.ChainConfig;
 import com.alipay.antchain.bridge.plugintestrunner.config.ChainConfigManager;
 import com.alipay.antchain.bridge.plugintestrunner.exception.ChainManagerException;
 import com.alipay.antchain.bridge.plugintestrunner.service.ChainManagerService;
@@ -46,7 +44,6 @@ public class ChainManagerServiceTest {
     public void testEOS() throws ChainManagerException, IOException, InterruptedException {
         String product = "eos";
         chainManagerService.startup(product);
-        EosChainManager manager = new EosChainManager(ChainConfig.EosChainConfig.getHttpUrl(), ChainConfig.EosChainConfig.privateKeyFile);
         chainManagerService.shutdown(product);
     }
 

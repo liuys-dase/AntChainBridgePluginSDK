@@ -26,7 +26,7 @@ public class EosChainManager extends IChainManager {
         br.close();
         this.amContractAddressDeployed = "am";
         this.sdpContractAddressDeployed = "sdp";
-        this.userName = "test";
+        this.userName = "com.alipay.antchain.bridge/plugintestrunner/operation";
         this.waitUtilTxIrreversible = true;
         this.config = String.format("{\"url\":\"%s\",\"userPriKey\":\"%s\",\"amContractAddressDeployed\":\"%s\",\"sdpContractAddressDeployed\":\"%s\",\"userName\":\"%s\",\"waitUtilTxIrreversible\":%b}",
                 url, userPriKey, amContractAddressDeployed, sdpContractAddressDeployed, userName, waitUtilTxIrreversible);

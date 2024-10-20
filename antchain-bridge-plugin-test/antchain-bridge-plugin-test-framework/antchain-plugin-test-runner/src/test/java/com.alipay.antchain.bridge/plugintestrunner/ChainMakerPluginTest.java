@@ -2,7 +2,6 @@ package com.alipay.antchain.bridge.plugintestrunner;
 
 import com.alipay.antchain.bridge.plugins.spi.bbc.IBBCService;
 import com.alipay.antchain.bridge.plugintestrunner.chainmanager.chainmaker.ChainMakerChainManager;
-import com.alipay.antchain.bridge.plugintestrunner.config.ChainConfig;
 import com.alipay.antchain.bridge.plugintestrunner.service.ChainManagerService;
 import com.alipay.antchain.bridge.plugintestrunner.service.PluginManagerService;
 import com.alipay.antchain.bridge.plugintestrunner.util.PTRLogger;
