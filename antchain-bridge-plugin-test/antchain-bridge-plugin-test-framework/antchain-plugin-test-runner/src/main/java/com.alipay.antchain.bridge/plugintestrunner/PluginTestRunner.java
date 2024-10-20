@@ -55,6 +55,17 @@ public class PluginTestRunner {
         printTestResult();
     }
 
+    public void run(String testCasePath) throws TestCaseException {
+        TestCaseContainer testCaseContainer = TestCaseLoader.loadTestCasesFromFile(testCasePath);
+        for (TestCase testCase : testCaseContainer.getTestCases()) {
+            logger.rlog(LogLevel.INFO, "Running " + testCase.getName());
+            chainManagerService.run(testCase);
+            pluginManagerService.run(testCase);
+            pluginTestService.run(testCase);
+        }
+        printTestResult();
+    }
+
     public static PluginTestRunner init() throws IOException, TestCaseException {
         ChainConfigManager configManager = ChainConfigManager.getInstance();
         PTRLogger logger = PTRLogger.getInstance();

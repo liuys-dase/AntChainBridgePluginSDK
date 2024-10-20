@@ -286,3 +286,38 @@ plugin test -j simple-ethereum-bbc-0.2.0-plugin.jar -p simple-ethereum -f readCr
   ]
 }
 ```
+
+### 命令行
+在命令行中，如果不传入测试用例文件，则默认使用 `config.properties` 中配置的 `testcase.path` 路径下的 `testcase.json` 文件进行测试。
+```shell
+run-case
+```
+如果要指定测试用例文件，可以通过 `-p` 参数传入测试用例文件的路径。
+```shell
+run-case -p /path/to/your/testcase.json
+```
+
+## 常见问题与解决方案
+### 1. `java.lang.LinkageError`
+在运行测试框架对插件进行测试时，可能会出现类似如下的错误信息：
+```shell
+java.lang.LinkageError: loader constraint violation: loader com.alipay.antchain.bridge.plugins.manager.pf4j.PrefixBannedPluginClassloader @147a5d08 wants to load interface org.slf4j.Logger.
+A different interface with the same name was previously loaded by ‘app’. (org.slf4j.Logger is in unnamed module of loader ‘app’)
+```
+这是由于插件中引入了不同版本的 `slf4j` 依赖导致的，可以通过在插件的 `pom.xml` 文件中排除 `slf4j` 依赖或者将 `slf4j` 依赖的 `scope` 设置为 ``provided`` 来解决这个问题。
+```xml
+<dependency>
+    <groupId>org.slf4j</groupId>
+    <artifactId>slf4j-api</artifactId>
+    <version>1.7.28</version>
+    <scope>provided</scope>
+</dependency>
+```
+类似的问题在 `web3j` 等依赖中也可能出现，也可以采取类似的解决方案。
+
+### 2. `VM Exception while processing transaction: invalid opcode`
+在运行插件功能测试时，可能会出现类似如下的错误信息：
+```shell
+Revert reason: 'VM Exception while processing transaction: invalid opcode'.
+```
+这个问题通常是由于编译智能合约时使用的 EVM 版本与测试链的 EVM 版本不一致导致的，可以通过修改智能合约的编译选项来解决这个问题。例如，在 Remix 上编译编译智能合约时，可以在 `Solidity 编译器 > 高级配置 > EVM 版本` 配置特定的 EVM 版本来保持与测试链的 EVM 版本一致。
