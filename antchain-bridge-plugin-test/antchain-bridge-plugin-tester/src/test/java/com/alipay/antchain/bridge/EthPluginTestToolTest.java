@@ -85,7 +85,7 @@ public class EthPluginTestToolTest {
     }
 
     @Test
-    public void testRelayAuthMessageTest() throws PluginTestToolException {
+    public void testRelayAuthMessageTest() throws PluginTestToolException, InterruptedException {
         ethTestTool.relayAuthMessageTest();
     }
 }

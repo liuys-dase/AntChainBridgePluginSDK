@@ -25,7 +25,7 @@ public interface ITester {
      * 查询链上txHash的交易是否已上链，会重试一定次数直至已上链
      * @param txHash
      */
-    public void waitForTxConfirmed(String txHash);
+    public void waitForTxConfirmed(String txHash) throws InterruptedException;
 
     public void sendMsgUnordered(AbstractBBCService service) throws Exception;
 

@@ -34,12 +34,12 @@ public class RelayAuthMessageTest {
         this.tester = tester;
     }
 
-    public static void run(AbstractBBCService service, AbstractTester tester) throws PluginTestToolException {
+    public static void run(AbstractBBCService service, AbstractTester tester) throws PluginTestToolException, InterruptedException {
         RelayAuthMessageTest relayAuthMessageTest = new RelayAuthMessageTest(service, tester);
         relayAuthMessageTest.relayAuthMessage_success();
     }
 
-    public void relayAuthMessage_success() throws PluginTestToolException {
+    public void relayAuthMessage_success() throws PluginTestToolException, InterruptedException {
         // 部署AM、SDP合约
         prepare();
 

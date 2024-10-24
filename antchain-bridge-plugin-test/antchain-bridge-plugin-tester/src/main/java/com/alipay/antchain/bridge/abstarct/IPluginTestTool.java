@@ -23,7 +23,7 @@ public interface IPluginTestTool {
 
     public void readCrossChainMessageReceiptTest() throws PluginTestToolException;
 
-    public void relayAuthMessageTest() throws PluginTestToolException;
+    public void relayAuthMessageTest() throws PluginTestToolException, InterruptedException;
 
     public void readCrossChainMessageByHeightTest() throws PluginTestToolException;
 }

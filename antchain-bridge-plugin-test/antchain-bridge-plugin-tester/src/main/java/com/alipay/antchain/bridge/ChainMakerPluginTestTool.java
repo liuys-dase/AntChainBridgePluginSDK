@@ -3,19 +3,23 @@ package com.alipay.antchain.bridge;
 import com.alipay.antchain.bridge.abstarct.IPluginTestTool;
 import com.alipay.antchain.bridge.core.*;
 import com.alipay.antchain.bridge.exception.PluginTestToolException;
-import com.alipay.antchain.bridge.testers.EthTester;
+import com.alipay.antchain.bridge.testers.ChainMakerTester;
 import com.alipay.antchain.bridge.commons.bbc.AbstractBBCContext;
 import com.alipay.antchain.bridge.plugins.spi.bbc.AbstractBBCService;
 
-public class EthPluginTestTool implements IPluginTestTool {
+public class ChainMakerPluginTestTool implements IPluginTestTool {
 
     AbstractBBCContext inContext;
     AbstractBBCService bbcService;
 
-    public EthPluginTestTool(AbstractBBCContext _context, AbstractBBCService _service) {
+    ChainMakerTester tester;
+
+    public ChainMakerPluginTestTool(AbstractBBCContext _context, AbstractBBCService _service) {
         inContext = _context;
         bbcService = _service;
+        tester = new ChainMakerTester(bbcService);
     }
+
 
     @Override
     public void startupTest() throws PluginTestToolException {
@@ -45,7 +49,7 @@ public class EthPluginTestTool implements IPluginTestTool {
     @Override
     public void setProtocolTest() throws PluginTestToolException {
         StartUpTest.runBefore(inContext, bbcService);
-        SetProtocolTest.run(bbcService, new EthTester(bbcService));
+        SetProtocolTest.run(bbcService, tester);
     }
 
     @Override
@@ -57,25 +61,24 @@ public class EthPluginTestTool implements IPluginTestTool {
     @Override
     public void setAmContractAndLocalDomainTest() throws PluginTestToolException {
         StartUpTest.runBefore(inContext, bbcService);
-        SetAMContractAndLocalDomainTest.run(bbcService, new EthTester(bbcService));
+        SetAMContractAndLocalDomainTest.run(bbcService, tester);
     }
 
     @Override
     public void readCrossChainMessageReceiptTest() throws PluginTestToolException {
         StartUpTest.runBefore(inContext, bbcService);
-        ReadCrossChainMessageReceiptTest.run(bbcService, new EthTester(bbcService));
+        ReadCrossChainMessageReceiptTest.run(bbcService, tester);
     }
 
     @Override
     public void readCrossChainMessageByHeightTest() throws PluginTestToolException {
         StartUpTest.runBefore(inContext, bbcService);
-        ReadCrossChainMessageByHeightTest.run(bbcService, new EthTester(bbcService));
+        ReadCrossChainMessageByHeightTest.run(bbcService, tester);
     }
 
     @Override
     public void relayAuthMessageTest() throws PluginTestToolException, InterruptedException {
         StartUpTest.runBefore(inContext, bbcService);
-        RelayAuthMessageTest.run(bbcService, new EthTester(bbcService));
+        RelayAuthMessageTest.run(bbcService, tester);
     }
-
 }

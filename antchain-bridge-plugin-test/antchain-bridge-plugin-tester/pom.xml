@@ -41,6 +41,10 @@
                     <groupId>org.slf4j</groupId>
                     <artifactId>slf4j-api</artifactId>
                 </exclusion>
+                <exclusion>
+                    <groupId>org.bouncycastle</groupId>
+                    <artifactId>bcprov-jdk15on</artifactId>
+                </exclusion>
             </exclusions>
         </dependency>
         <dependency>
@@ -72,6 +76,78 @@
             <artifactId>simple-ethereum-bbc</artifactId>
             <version>0.2.0</version>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.alipay.antchain.bridge</groupId>
+            <artifactId>chainmaker-bbc</artifactId>
+            <version>0.1.0</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.chainmaker</groupId>
+            <artifactId>chainmaker-sdk-java</artifactId>
+            <version>2.3.2</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.bouncycastle</groupId>
+                    <artifactId>bcpkix-jdk18on</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.bouncycastle</groupId>
+                    <artifactId>bcpkix-jdk15on</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.web3j</groupId>
+                    <artifactId>abi</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.bouncycastle</groupId>
+            <artifactId>bcpkix-jdk18on</artifactId>
+            <version>1.75</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.google.protobuf</groupId>
+            <artifactId>protobuf-java-util</artifactId>
+            <version>3.22.2</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.google.guava</groupId>
+                    <artifactId>guava</artifactId>
+                </exclusion>
+<!--                <exclusion>-->
+<!--                    <groupId>com.google.protobuf</groupId>-->
+<!--                    <artifactId>protobuf-java</artifactId>-->
+<!--                </exclusion>-->
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>io.netty</groupId>
+            <artifactId>netty-tcnative-openssl-static</artifactId>
+            <scope>system</scope>
+            <version>2.0.39.Final</version>
+            <systemPath>${project.basedir}/lib/netty-tcnative-openssl-static-2.0.39.Final.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>io.netty</groupId>
+            <artifactId>netty-handler</artifactId>
+            <version>4.1.53.Final</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.grpc</groupId>
+            <artifactId>grpc-netty</artifactId>
+            <version>1.53.0</version>
+            <scope>provided</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>io.netty</groupId>
+                    <artifactId>netty-handler</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
     </dependencies>
 

@@ -46,6 +46,7 @@ public class SetupSDPMessageContractTest {
             if (!ContractStatusEnum.CONTRACT_DEPLOYED.equals(curCtx.getSdpContract().getStatus())) {
                 throw new SDPContractStatusException("SetupSDPMessageContractTest failed, SDPContract status should be CONTRACT_DEPLOYED after setup.");
             }
+            System.out.println("SDP Contract Address: " + curCtx.getSdpContract().getContractAddress());
         } catch (Exception e) {
             throw new SetupSDPMessageContractTestException("SetupSDPMessageContractTest failed, exception occurred.", e);
         }
